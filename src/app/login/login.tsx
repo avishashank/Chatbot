@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
-import {Container, InputAdornment, Slide, TextField, Button, IconButton} from '@material-ui/core';
+import {Container, InputAdornment, Slide, TextField, Button, IconButton, Box} from '@material-ui/core';
 import './login.scss';
 import {Visibility, VisibilityOff} from  '@material-ui/icons';
+import ErrorDialog from '../common/error-dialog';
 
 
 // interface State {
@@ -16,7 +17,8 @@ export default class LoginScreen extends Component<any , any> {
         this.state= {
             showPassword: false, 
             password:'',
-            username: ''
+            username: '',
+            errorDiaog: false
         }
     }
 
@@ -25,19 +27,29 @@ export default class LoginScreen extends Component<any , any> {
     }
 
     onLogin = () => {
-        if(this.state.username && this.state.password){
-            const user = {
-                username: this.state.username
+        this.setState({errorDiaog: false})
+        if(this.state.username && this.state.password) {
+            if(this.state.username === 'demo' && this.state.password == "demo") {
+                const user = {
+                    username: this.state.username
+                }
+                localStorage.setItem('user', JSON.stringify(user));
+                this.props.history.replace( '/' );
             }
-            localStorage.setItem('user', JSON.stringify(user));
-            this.props.history.replace( '/' );
+            else {
+                this.setState({errorDiaog: true})
+            }
         }
     }
 
     render () {
         return (
+            <Box p={3}>
+                {this.state.errorDiaog && <ErrorDialog  errorDiaog = {this.state.errorDiaog}/>}
             <Container className="login-screen">
-                <form onSubmit= {(e)=>{this.onLogin()}}>
+                <form onSubmit= {(e)=>{
+                    e.preventDefault();
+                     this.onLogin()}}>
                     <TextField
                         id="outlined-username-input"
                         label="Username"
@@ -75,6 +87,7 @@ export default class LoginScreen extends Component<any , any> {
                     <Button variant="contained" color="primary"  type="submit">SIGN IN</Button>
                     </form>
             </Container>
+            </Box>
         );
     }
 }
