@@ -1,0 +1,23 @@
+.login-screen {
+    margin-top: 100px;
+}
+form {
+    display: flex;
+    flex-direction: column;
+    margin-top: 20px;
+    .forget-password {
+        font-size: 14px;
+        align-self: flex-end;
+        text-decoration: none;
+        margin-top: 15px;
+    }
+    .resend-code {
+        text-decoration: underline;
+        cursor: pointer;
+        align-self: flex-end;
+        color: blue;
+        &:hover {
+            color: #030382;
+        }
+    }
+}
